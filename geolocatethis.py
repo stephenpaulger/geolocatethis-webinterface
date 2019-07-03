@@ -1,11 +1,8 @@
-import json, requests, sys
-
-sys.path.append('.')
-sys.path.append('./assets')
-
-from auth_key import *
-from api_data import *
-from art import ascii_art, welcome_text
+import json
+import requests
+from assets.auth_key import *
+from assets.api_data import *
+from assets.art import ascii_art, welcome_text
 
 
 #Function handling requests to Google Maps API 
@@ -119,7 +116,7 @@ while True:
         else:
                 break
 
-distance = input("[+]Distance beetwen place 1 and place 2 [m]: ")
+distance = input("[+]Distance between place 1 and place 2 [m]: ")
 print('searching...')
 geo_locate_this()
 
