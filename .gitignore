@@ -106,3 +106,4 @@ venv.bak/
 # Idea and DS info
 .DS_Store
 .idea
+assets/auth_key.py

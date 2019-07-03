@@ -53,10 +53,15 @@ def geo_locate_this(lat, lon, radius, keyword_place_1, keyword_place_2, category
                                 place_2_data = send_request(temp_location, distance, keyword_place_2, category_place_2, blank_pagetoken)
                                 if 'ZERO_RESULTS' not in place_2_data['status']:
                                         print ("Found match at {} (location: {})".format(temp_name, temp_location))
-                                        match_count += 1     
+                                        full_results = []
+                                        full_results.append("Found match at {} (location: {})".format(temp_name,
+                                                                                                     temp_location))
+                                        print(full_results)
+                                        match_count += 1
                                 
                         if 'next_page_token' not in place_1_data:
                                 print ('Done. Found {} locations matching given criteria.'.format(match_count))
+                                return full_results
                                 break
                 
                         else:
@@ -79,4 +84,4 @@ def geo_locate_this(lat, lon, radius, keyword_place_1, keyword_place_2, category
                         return('Request to Google API denied. Check your API key.')
                         break
 
-        return
+        return full_results
