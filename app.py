@@ -16,12 +16,12 @@ def home():
                                   request.form['radius'],   request.form['keyword1'],
                                   request.form['category1'], request.form['keyword2'],
                                   request.form['category2'], request.form['distance'])
-        flash(str(results))
+        flash(results)
     else:
         print(form.errors)
         flash('There was an error submitting your request')
 
-    return render_template('home.html', title='GeoLocateThis Web Application', form=form)
+    return render_template('index.html', title='GeoLocateThis Web Application', form=form)
 
 
 if __name__ == '__main__':
