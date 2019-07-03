@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Geolocatethis Web Interface</title>
+</head>
+
+
+<body>
+    <h1>Testing</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+              <li>{{ message[1] }}</li>
+            {% endfor %}</ul>
+        {% endif %}
+    {% endwith %}
+
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.latitude.label }}<br>
+                {{ form.latitude() }}<br>
+
+                {{ form.longitude.label }}<br>
+                {{ form.longitude() }}<br>
+
+                {{ form.radius.label }}<br>
+                {{ form.radius() }}<br>
+
+                {{ form.keyword1.label }}<br>
+                {{ form.keyword1() }}<br>
+
+                {{ form.category1.label }}<br>
+                {{ form.category1() }}<br>
+
+                {{ form.keyword2.label }}<br>
+                {{ form.keyword2() }}<br>
+
+                {{ form.category2.label }} <br>
+                {{ form.category2() }}<br>
+
+                {{ form.distance.label }}<br>
+                {{ form.distance() }}<br>
+
+            </p>
+
+            {{ form.submit() }}
+        </form>
+
+</body>
+</html>

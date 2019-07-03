@@ -2,7 +2,6 @@ import json
 import requests
 from assets.auth_key import *
 from assets.api_data import *
-from assets.art import ascii_art, welcome_text
 
 
 #Function handling requests to Google Maps API 
@@ -33,7 +32,10 @@ def send_request(location, radius, keyword, category, pagetoken = None):
 
 # Main searching function     
 
-def geo_locate_this():
+def geo_locate_this(lat, lon, radius, keyword_place_1, keyword_place_2, category_place_1,
+                    category_place_2, distance):
+
+        center_point = ('{},{}'.format(lat, lon))
         pagetoken = None
         blank_pagetoken = None
         match_count = 0
@@ -62,62 +64,19 @@ def geo_locate_this():
                 
                 elif 'ZERO_RESULTS' in place_1_data['status']:
                         print('Sorry, no results with provided parameters')
+                        return('Sorry, no results with provided parameters')
+
+
                         break                
                 
                 elif 'OVER_QUERY_LIMIT' in place_1_data['status']:
                         print('You have reached your daily API quota limit for this key.')
+                        return('You have reached your daily API quota limit for this key.')
                         break
                 
                 elif 'REQUEST_DENIED' in place_1_data['status']:
                         print('Request to Google API denied. Check your API key.')
-                        break                
-                
-        return  
+                        return('Request to Google API denied. Check your API key.')
+                        break
 
-#
-# Main program #
-#
-print(ascii_art)
-print()
-print(welcome_text)
-print()
-
-
-print('Define center point of searched area.')
-lat = input('[+]Latitude: ')
-lon = input('[+]Longtitude: ')
-center_point = ('{},{}'.format(lat,lon))
-radius = input("[+]Search radius from above given coordinates [in metres, max. 50000]: ")
-
-keyword_place_1 = input("[+]Keyword for place 1: ")
-
-while True:
-        category_place_1 = input("[Optional] Choose category for place 1 to narrow search. Type 'help' for complete list of allowed categories [enter for None]: ")
-        if category_place_1 == 'help':
-                print(place_types)
-        elif category_place_1 == "":
-                break
-        elif category_place_1 not in place_types:
-                print('Invalid category. Try again.')
-        else:
-                break
-
-
-keyword_place_2 = input("[+]Keyword for place 2: ")
-
-while True:
-        category_place_2 = input("[Optional] Choose category for place 2 to narrow search. Type 'help' for complete list of allowed categories [enter for None]: ")
-        if category_place_2 == 'help':
-                print(place_types)
-        elif category_place_2 == "":
-                break
-        elif category_place_2 not in place_types:
-                print('Invalid category. Try again.')
-        else:
-                break
-
-distance = input("[+]Distance between place 1 and place 2 [m]: ")
-print('searching...')
-geo_locate_this()
-
-
+        return
