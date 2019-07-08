@@ -39,7 +39,8 @@ def geo_locate_this(lat, lon, radius, keyword_place_1, keyword_place_2, category
         pagetoken = None
         blank_pagetoken = None
         match_count = 0
-        
+        full_results = []
+
         while True:
                 place_1_data = send_request(center_point, radius, keyword_place_1, category_place_1, pagetoken)
                         
@@ -52,11 +53,9 @@ def geo_locate_this(lat, lon, radius, keyword_place_1, keyword_place_2, category
                                 
                                 place_2_data = send_request(temp_location, distance, keyword_place_2, category_place_2, blank_pagetoken)
                                 if 'ZERO_RESULTS' not in place_2_data['status']:
-                                        print ("Found match at {} (location: {})".format(temp_name, temp_location))
-                                        full_results = []
+                                        '''print ("Found match at {} (location: {})".format(temp_name, temp_location))'''
                                         full_results.append("Found match at {} (location: {})".format(temp_name,
                                                                                                      temp_location))
-                                        print(full_results)
                                         match_count += 1
                                 
                         if 'next_page_token' not in place_1_data:

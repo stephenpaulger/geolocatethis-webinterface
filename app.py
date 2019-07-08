@@ -16,7 +16,10 @@ def home():
                                   request.form['radius'],   request.form['keyword1'],
                                   request.form['category1'], request.form['keyword2'],
                                   request.form['category2'], request.form['distance'])
-        flash(results)
+        print("Console Debug: " + str(results))
+        for hit in results:
+            print(hit)
+            flash(hit)
     else:
         print(form.errors)
         flash('There was an error submitting your request')
