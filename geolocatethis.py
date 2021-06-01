@@ -1,37 +1,4 @@
-import json
-import requests
-from assets.auth_key import *
-from assets.api_data import *
-
-
-# Function handling requests to Google Maps API
-def send_request(location, radius, keyword, category, pagetoken=None):
-
-    params = {
-        "location": location,
-        "radius": radius,
-        "type": category,
-        "keyword": keyword,
-        "key": AUTH_KEY,
-    }
-
-    if pagetoken is not None:
-        params["pagetoken"] = pagetoken
-
-    response = requests.get(api_url, params=params)
-
-    if response.status_code == 200:
-        raw_data = json.loads(response.content)
-
-    else:
-        print("Something went wrong. Error code: {}".format(response.status_code))
-        exit
-
-    return raw_data
-
-
-# Main searching function
-
+from gmap import send_request
 
 def geo_locate_this(
     lat,
