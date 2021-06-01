@@ -11,7 +11,7 @@ app.config["SECRET_KEY"] = token_hex(16)
 def home():
     form = geolocatethisForm(request.form)
 
-    if form.validate():
+    if form.validate_on_submit():
         results = geo_locate_this(
             request.form["latitude"],
             request.form["longitude"],
@@ -22,18 +22,13 @@ def home():
             request.form["category2"],
             request.form["distance"],
         )
-        print("Console Debug: " + str(results))
+
         for hit in results:
-            print(hit)
             flash(hit)
-    else:
-        print(form.errors)
-        flash("There was an error submitting your request")
 
-    return render_template(
-        "index.html", title="GeoLocateThis Web Application", form=form
-    )
+    return render_template("index.html", form=form)
 
 
-if __name__ == "__main__":
-    app.run()
+@app.route("/about")
+def about():
+    return render_template("about.html")
