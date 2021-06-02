@@ -1,5 +1,6 @@
 from gmap import send_request
 
+
 def geo_locate_this(
     lat,
     lon,
@@ -14,7 +15,6 @@ def geo_locate_this(
     center_point = "{},{}".format(lat, lon)
     pagetoken = None
     blank_pagetoken = None
-    match_count = 0
     full_results = []
 
     while True:
@@ -22,55 +22,35 @@ def geo_locate_this(
             center_point, radius, keyword_place_1, category_place_1, pagetoken
         )
 
+        if "ZERO_RESULTS" in place_1_data["status"]:
+            return "Sorry, no results with provided parameters"
+
+        if "OVER_QUERY_LIMIT" in place_1_data["status"]:
+            return "You have reached your daily API quota limit for this key."
+
+        if "REQUEST_DENIED" in place_1_data["status"]:
+            return "Request to Google API denied. Check your API key."
+
         if "OK" in place_1_data["status"]:
             for result in place_1_data["results"]:
-                temp_name = result["name"]
-                temp_lat = result["geometry"]["location"]["lat"]
-                temp_lng = result["geometry"]["location"]["lng"]
-                temp_location = "{},{}".format(temp_lat, temp_lng)
+                name = result["name"]
+                lat = result["geometry"]["location"]["lat"]
+                lng = result["geometry"]["location"]["lng"]
+                location = f"{lat},{lon}"
 
                 place_2_data = send_request(
-                    temp_location,
+                    location,
                     distance,
                     keyword_place_2,
                     category_place_2,
                     blank_pagetoken,
                 )
                 if "ZERO_RESULTS" not in place_2_data["status"]:
-                    """print ("Found match at {} (location: {})".format(temp_name, temp_location))"""
-                    full_results.append(
-                        "Found match at {} (location: {})".format(
-                            temp_name, temp_location
-                        )
-                    )
-                    match_count += 1
+                    full_results.append(f"{name} (location: {location})")
 
             if "next_page_token" not in place_1_data:
-                print(
-                    "Done. Found {} locations matching given criteria.".format(
-                        match_count
-                    )
-                )
-                return full_results
                 break
 
-            else:
-                pagetoken = place_1_data["next_page_token"]
-
-        elif "ZERO_RESULTS" in place_1_data["status"]:
-            print("Sorry, no results with provided parameters")
-            return "Sorry, no results with provided parameters"
-
-            break
-
-        elif "OVER_QUERY_LIMIT" in place_1_data["status"]:
-            print("You have reached your daily API quota limit for this key.")
-            return "You have reached your daily API quota limit for this key."
-            break
-
-        elif "REQUEST_DENIED" in place_1_data["status"]:
-            print("Request to Google API denied. Check your API key.")
-            return "Request to Google API denied. Check your API key."
-            break
+            pagetoken = place_1_data["next_page_token"]
 
     return full_results
