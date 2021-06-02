@@ -36,7 +36,7 @@ def geo_locate_this(
                 name = result["name"]
                 lat = result["geometry"]["location"]["lat"]
                 lng = result["geometry"]["location"]["lng"]
-                location = f"{lat},{lon}"
+                location = f"{lat},{lng}"
 
                 place_2_data = send_request(
                     location,
