@@ -1,4 +1,7 @@
-from gmap import send_request
+import googlemaps
+
+
+AUTH_KEY = ''
 
 
 def geo_locate_this(
@@ -12,14 +15,18 @@ def geo_locate_this(
     distance,
 ):
 
-    center_point = "{},{}".format(lat, lon)
-    pagetoken = None
-    blank_pagetoken = None
+    center_point = f"{lat},{lon}"
+    page_token = None
     full_results = []
+    gmaps = googlemaps.Client(AUTH_KEY)
 
     while True:
-        place_1_data = send_request(
-            center_point, radius, keyword_place_1, category_place_1, pagetoken
+        place_1_data = gmaps.places_nearby(
+            location=center_point,
+            radius=radius,
+            keyword=keyword_place_1,
+            type=category_place_1,
+            page_token=page_token
         )
 
         if "ZERO_RESULTS" in place_1_data["status"]:
@@ -38,19 +45,20 @@ def geo_locate_this(
                 lng = result["geometry"]["location"]["lng"]
                 location = f"{lat},{lng}"
 
-                place_2_data = send_request(
-                    location,
-                    distance,
-                    keyword_place_2,
-                    category_place_2,
-                    blank_pagetoken,
+                place_2_data = gmaps.places_nearby(
+                    location=location,
+                    radius=distance,
+                    keyword=keyword_place_2,
+                    type=category_place_2,
+                    page_token=None,
                 )
+
                 if "ZERO_RESULTS" not in place_2_data["status"]:
                     full_results.append(f"{name} (location: {location})")
 
             if "next_page_token" not in place_1_data:
                 break
 
-            pagetoken = place_1_data["next_page_token"]
+            page_token = place_1_data["next_page_token"]
 
     return full_results
