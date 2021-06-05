@@ -36,8 +36,8 @@
                 {{ form.submit(class="btn btn-indigo") }}
             </form>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
+            {% if results %}
+            {{ results }}
             <h3>Results</h3>
             <table>
                 <thead>
@@ -47,16 +47,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for message in messages %}
+                    {% for message in results %}
                     <tr>
                         <th scope="row"></th>
-                        <td>{{ message[1] }}</td>
+                        <td>{{ message }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             {% endif %}
-            {% endwith %}
         </main>
     </body>
 </html>
