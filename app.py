@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request
-from secrets import token_hex
 from forms import geolocatethisForm
 from geolocatethis import geo_locate_this
 
+import googlemaps
+
 app = Flask(__name__)
-app.config["SECRET_KEY"] = token_hex(16)
+app.config.from_object("config.Config")
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -13,6 +14,7 @@ def home():
     results = None
 
     if form.validate_on_submit():
+        gmaps = googlemaps.Client(app.config.get("GMAPS_AUTH_KEY"))
         results = geo_locate_this(
             request.form["latitude"],
             request.form["longitude"],
@@ -22,6 +24,7 @@ def home():
             request.form["keyword2"],
             request.form["category2"],
             request.form["distance"],
+            gmaps,
         )
 
     return render_template("index.html", form=form, results=results)

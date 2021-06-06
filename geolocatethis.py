@@ -1,9 +1,3 @@
-import googlemaps
-
-
-AUTH_KEY = ''
-
-
 def geo_locate_this(
     lat,
     lon,
@@ -13,12 +7,12 @@ def geo_locate_this(
     category_place_1,
     category_place_2,
     distance,
+    gmaps,
 ):
 
     center_point = f"{lat},{lon}"
     page_token = None
     full_results = []
-    gmaps = googlemaps.Client(AUTH_KEY)
 
     while True:
         place_1_data = gmaps.places_nearby(
